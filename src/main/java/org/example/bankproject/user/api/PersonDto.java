@@ -3,10 +3,12 @@ package org.example.bankproject.user.api;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Builder
+@Getter
 public class PersonDto {
 
     @Size(min = 3, max = 20)
@@ -21,5 +23,7 @@ public class PersonDto {
     private String nationalIdentityNumber;
     private LocalDate birthDate;
     private int gender;
+    private int age;
+
     private int phoneNumber;
 }
