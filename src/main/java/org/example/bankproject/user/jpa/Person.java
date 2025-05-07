@@ -26,5 +26,6 @@ public class Person {
     private String nationalIdentityNumber;
     private LocalDate birthDate;
     private int gender;
+    private int age;
     private int phoneNumber;
 }
