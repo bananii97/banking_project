@@ -14,6 +14,13 @@ public class PersonMapper {
 
     public static Person fromDto(PersonDto personDto) {
         return Person.builder()
+                .name(personDto.getName())
+                .lastName(personDto.getLastName())
+                .email(personDto.getEmail())
+                .nationalIdentityNumber(personDto.getNationalIdentityNumber())
+                .birthDate(personDto.getBirthDate())
+                .gender(personDto.getGender())
+                .age(personDto.getAge())
                 .build();
     }
 }
