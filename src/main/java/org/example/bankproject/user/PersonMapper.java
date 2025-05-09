@@ -17,10 +17,9 @@ public class PersonMapper {
                 .name(personDto.getName())
                 .lastName(personDto.getLastName())
                 .email(personDto.getEmail())
-                .nationalIdentityNumber(personDto.getNationalIdentityNumber())
-                .birthDate(personDto.getBirthDate())
-                .gender(personDto.getGender())
-                .age(personDto.getAge())
+                .personalData(personDto.getPersonalData())
+                .address(personDto.getAddress())
+                .phoneNumber(personDto.getPhoneNumber())
                 .build();
     }
 }
