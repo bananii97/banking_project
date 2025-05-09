@@ -1,11 +1,13 @@
 package org.example.bankproject.user.api;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDate;
+import org.example.bankproject.user.model.Address;
+import org.example.bankproject.user.model.PersonalData;
 
 @Builder
 @Getter
@@ -20,10 +22,13 @@ public class PersonDto {
     @Email
     private String email;
 
-    private String nationalIdentityNumber;
-    private LocalDate birthDate;
-    private int gender;
-    private int age;
+    @NotNull
+    @Valid
+    private PersonalData personalData;
+
+    @NotNull
+    @Valid
+    private Address address;
 
     private int phoneNumber;
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.example.bankproject.user.model.Address;
+import org.example.bankproject.user.model.PersonalData;
 
 import java.time.LocalDate;
 
@@ -23,9 +25,12 @@ public class Person {
     private String name;
     private String lastName;
     private String email;
-    private String nationalIdentityNumber;
-    private LocalDate birthDate;
-    private int gender;
-    private int age;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private PersonalData personalData;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
     private int phoneNumber;
 }
