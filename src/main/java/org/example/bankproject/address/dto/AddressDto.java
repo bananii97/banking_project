@@ -1,22 +1,13 @@
-package org.example.bankproject.user.model;
+package org.example.bankproject.address.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Entity
-@RequiredArgsConstructor
+@Builder
 @Getter
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AddressDto {
 
     @Size(min = 3, max = 50)
     private String city;
@@ -29,5 +20,4 @@ public class Address {
 
     @Size(min = 1, max = 50)
     private String apartmentNumber;
-
 }

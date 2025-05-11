@@ -2,12 +2,11 @@ package org.example.bankproject.user.api;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
-import org.example.bankproject.user.model.Address;
-import org.example.bankproject.user.model.PersonalData;
+import org.example.bankproject.address.dto.AddressDto;
+import org.example.bankproject.personal_data.dto.PersonalDataDto;
 
 @Builder
 @Getter
@@ -22,13 +21,11 @@ public class PersonDto {
     @Email
     private String email;
 
-    @NotNull
     @Valid
-    private PersonalData personalData;
+    private PersonalDataDto personalDataDto;
 
-    @NotNull
     @Valid
-    private Address address;
+    private AddressDto addressDto;
 
     private int phoneNumber;
 }
