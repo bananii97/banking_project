@@ -2,11 +2,15 @@ package org.example.bankproject.user.api;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.bankproject.address.dto.AddressDto;
-import org.example.bankproject.personal_data.dto.PersonalDataDto;
+import org.example.bankproject.gender.Gender;
+import org.example.bankproject.identityCard.dto.IdentityCardDto;
+
+import java.time.LocalDate;
 
 @Builder
 @Getter
@@ -21,8 +25,15 @@ public class PersonDto {
     @Email
     private String email;
 
+    private Gender gender;
+
+    private String nationalIdentityNumber;
+
+    @Past(message = "Niepoprawna data")
+    private LocalDate dateOfBirth;
+
     @Valid
-    private PersonalDataDto personalDataDto;
+    private IdentityCardDto identityCardDto;
 
     @Valid
     private AddressDto addressDto;
