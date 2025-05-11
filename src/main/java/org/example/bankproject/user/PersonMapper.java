@@ -1,6 +1,8 @@
 package org.example.bankproject.user;
 
 import lombok.Builder;
+import org.example.bankproject.address.AddressMapper;
+import org.example.bankproject.personal_data.PersonalDataMapper;
 import org.example.bankproject.user.api.PersonDto;
 import org.example.bankproject.user.jpa.Person;
 
@@ -17,8 +19,8 @@ public class PersonMapper {
                 .name(personDto.getName())
                 .lastName(personDto.getLastName())
                 .email(personDto.getEmail())
-                .personalData(personDto.getPersonalData())
-                .address(personDto.getAddress())
+                .personalData(PersonalDataMapper.fromDto(personDto.getPersonalDataDto()))
+                .address(AddressMapper.fromDto(personDto.getAddressDto()))
                 .phoneNumber(personDto.getPhoneNumber())
                 .build();
     }

@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.example.bankproject.user.model.Address;
-import org.example.bankproject.user.model.PersonalData;
-
-import java.time.LocalDate;
+import org.example.bankproject.address.model.Address;
+import org.example.bankproject.personal_data.model.PersonalData;
 
 @Getter
 @Entity
