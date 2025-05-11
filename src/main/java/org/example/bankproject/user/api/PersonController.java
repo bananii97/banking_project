@@ -18,7 +18,7 @@ public class PersonController {
 
     @PostMapping("/create")
     public Person createPerson(@RequestBody @Valid PersonDto personDto) {
-         return personService.createPerson(personDto);
+        return personService.createPerson(personDto);
     }
 
     @GetMapping("/all")

@@ -12,7 +12,7 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
-    public Person createPerson(PersonDto personDto){
+    public Person createPerson(PersonDto personDto) {
         Person person = PersonMapper.fromDto(personDto);
         return personRepository.save(person);
     }
