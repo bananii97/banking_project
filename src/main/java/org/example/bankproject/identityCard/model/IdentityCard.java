@@ -1,11 +1,10 @@
-package org.example.bankproject.personal_data.model;
+package org.example.bankproject.identityCard.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.example.bankproject.personal_data.Gender;
 
 import java.time.LocalDate;
 
@@ -14,16 +13,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Builder
-public class PersonalData {
+public class IdentityCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nationalIdentityNumber;
-    private LocalDate dateOfBirth;
-    private Gender gender;
-    private int age;
+    private String identityCardNumber;
+    private String issuePlace;
+    private String issuingAuthority;
+    private LocalDate validUntil;
 }
 
 
