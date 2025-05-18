@@ -7,6 +7,10 @@ public class IdentityCardMapper {
 
     public static IdentityCardDto toDto(IdentityCard identityCard) {
         return IdentityCardDto.builder()
+                .identityCardNumber(identityCard.getIdentityCardNumber())
+                .issuePlace(identityCard.getIssuePlace())
+                .issuingAuthority(identityCard.getIssuingAuthority())
+                .validUntil(identityCard.getValidUntil())
                 .build();
     }
 
