@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/person")
+@RequestMapping("${api.version.prefix}/person")
 @RequiredArgsConstructor
 public class PersonController {
 

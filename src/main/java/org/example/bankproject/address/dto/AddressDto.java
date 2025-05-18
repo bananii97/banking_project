@@ -12,7 +12,7 @@ public class AddressDto {
     @Size(min = 3, max = 50)
     private String city;
 
-    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}$", message = "Niepoprawny kod pocztowy")
+    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}$", message = "Incorrect postal code")
     private String postalCode;
 
     @Size(min = 3, max = 50)

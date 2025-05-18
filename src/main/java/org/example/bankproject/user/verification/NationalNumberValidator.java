@@ -1,15 +1,14 @@
 package org.example.bankproject.user.verification;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import org.example.bankproject.gender.Gender;
 import org.example.bankproject.user.api.PersonDto;
+import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
-public class NationalNumberValidator implements Verification {
+@Component
+public class NationalNumberValidator  {
 
-    @Override
     public boolean passed(PersonDto person) {
         return genderMatchesIdentificationNumber(person)
                 && identificationNumberStartsWithDateOfBirth(person)
@@ -17,14 +16,14 @@ public class NationalNumberValidator implements Verification {
     }
 
     private boolean genderMatchesIdentificationNumber(PersonDto person) {
-        Gender changingGender;
+        Gender gender;
         if (Integer.parseInt(person.getNationalIdentityNumber()
                 .substring(9, 10)) % 2 == 0) {
-            changingGender = Gender.FEMALE;
+            gender = Gender.FEMALE;
         } else {
-            changingGender = Gender.MALE;
+            gender = Gender.MALE;
         }
-        return changingGender == person.getGender();
+        return gender == person.getGender();
     }
 
     private boolean identificationNumberStartsWithDateOfBirth(PersonDto person) {

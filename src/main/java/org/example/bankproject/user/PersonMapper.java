@@ -11,6 +11,15 @@ public class PersonMapper {
 
     public static PersonDto toDto(Person person) {
         return PersonDto.builder()
+                .name(person.getName())
+                .lastName(person.getLastName())
+                .email(person.getEmail())
+                .nationalIdentityNumber(person.getNationalIdentityNumber())
+                .dateOfBirth(person.getDateOfBirth())
+                .gender(person.getGender())
+                .identityCardDto(IdentityCardMapper.toDto(person.getIdentityCard()))
+                .addressDto(AddressMapper.toDto(person.getAddress()))
+                .phoneNumber(person.getPhoneNumber())
                 .build();
     }
 
