@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 public class IdentityCardDto {
 
-    @Pattern(regexp = "^[A-Za-z]{3}\\d{6}$", message = "Niepoprawny format")
+    @Pattern(regexp = "^[A-Za-z]{3}\\d{6}$", message = "incorrect code from ID card")
     private String identityCardNumber;
 
     @Size(min = 3, max = 30)

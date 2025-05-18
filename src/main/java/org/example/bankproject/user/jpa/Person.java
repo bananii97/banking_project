@@ -1,10 +1,7 @@
 package org.example.bankproject.user.jpa;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.example.bankproject.address.model.Address;
 import org.example.bankproject.gender.Gender;
 import org.example.bankproject.identityCard.model.IdentityCard;
@@ -16,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "person")
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Person {
 
     @Id

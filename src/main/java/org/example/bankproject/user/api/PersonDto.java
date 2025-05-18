@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.bankproject.address.dto.AddressDto;
@@ -12,8 +13,9 @@ import org.example.bankproject.identityCard.dto.IdentityCardDto;
 
 import java.time.LocalDate;
 
-@Builder
+@Builder(toBuilder = true)
 @Getter
+@AllArgsConstructor
 public class PersonDto {
 
     @Size(min = 3, max = 20)
