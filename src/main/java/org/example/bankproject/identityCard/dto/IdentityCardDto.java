@@ -4,12 +4,14 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class IdentityCardDto {
 
     @Pattern(regexp = "^[A-Za-z]{3}\\d{6}$", message = "incorrect code from ID card")
@@ -21,6 +23,6 @@ public class IdentityCardDto {
     @Size(min = 5, max = 100)
     private String issuingAuthority;
 
-    @Future(message = "Niepoprawna data")
+    @Future(message = "Incorrect date")
     private LocalDate validUntil;
 }
