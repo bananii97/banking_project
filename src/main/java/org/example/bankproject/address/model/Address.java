@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 @AllArgsConstructor
 @Getter
 @Builder
+@EqualsAndHashCode
 public class Address {
 
     @Id

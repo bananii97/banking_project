@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Builder
+@EqualsAndHashCode
 public class IdentityCard {
 
     @Id

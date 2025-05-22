@@ -4,7 +4,7 @@ import org.example.bankproject.address.dto.AddressDto;
 import org.example.bankproject.gender.Gender;
 import org.example.bankproject.identityCard.dto.IdentityCardDto;
 import org.example.bankproject.user.api.PersonDto;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class VerificationTest {
 
     private NationalNumberValidator nationalNumberValidator = new NationalNumberValidator();
-    private PersonDto personDto;
+    private static PersonDto personDto;
 
-    @BeforeEach
-    void correctPersonDto() {
+    @BeforeAll
+    static void correctPersonDto() {
         IdentityCardDto identityCardDto = IdentityCardDto.builder()
                 .identityCardNumber("ABC123123")
                 .issuePlace("Warszawa")
@@ -48,36 +48,40 @@ public class VerificationTest {
     @CsvSource({"04221512319,2004-02-15,MALE",
                 "95031712378,1995-03-17,MALE",
                 "88112843209,1988-11-28,FEMALE"})
-    public void passedTest(String nationalIdentityNumber, String dateBirth, String gender) {
+    public void passedTestAllValidationForNationalNumberShouldReturnTrue(String nationalIdentityNumber, String dateBirth, String gender) {
         //given
         LocalDate birthDate = LocalDate.parse(dateBirth);
-        PersonDto variant = personDto.toBuilder()
+        personDto = PersonDto.builder()
                 .nationalIdentityNumber(nationalIdentityNumber)
                 .dateOfBirth(birthDate)
                 .gender(Gender.valueOf(gender))
                 .build();
+
         //when
-        boolean returned = nationalNumberValidator.passed(variant);
+        boolean returned = nationalNumberValidator.passed(personDto);
 
         //then
         assertTrue(returned);
     }
 
     @ParameterizedTest
-    @CsvSource({"03270556711,2003-07-05,MALE",
-            "95031712378,1995-03-17,FEMALE",
-            "88112843209,1988-11-27,FEMALE"})
-    public void failedTestPassed(String nationalIdentityNumber, String dateBirth, String gender) {
+    @CsvSource({"04221512319,2004-02-15,FEMALE",
+            "95031712378,1994-03-17,MALE",
+            "88112843209,1981-11-28,MALE",
+            "04211512319,2004-02-15,FEMALE",
+            "95031712378,1994-03-17,FEMALE",
+            "88112843219,1981-11-28,MALE",})
+    public void testForAllValidationShouldReturnFalse(String nationalIdentityNumber, String dateBirth, String gender) {
         //given
         LocalDate birthDate = LocalDate.parse(dateBirth);
-        PersonDto variant = personDto.toBuilder()
+        personDto = PersonDto.builder()
                 .nationalIdentityNumber(nationalIdentityNumber)
                 .dateOfBirth(birthDate)
                 .gender(Gender.valueOf(gender))
                 .build();
+
         //when
-        boolean returned = nationalNumberValidator.passed(variant);
-        System.out.println(variant);
+        boolean returned = nationalNumberValidator.passed(personDto);
 
         //then
         assertFalse(returned);
