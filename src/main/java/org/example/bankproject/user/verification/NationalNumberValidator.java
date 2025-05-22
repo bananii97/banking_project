@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class NationalNumberValidator  {
+public class NationalNumberValidator {
 
     public boolean passed(PersonDto person) {
         return genderMatchesIdentificationNumber(person)

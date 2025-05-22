@@ -3,10 +3,12 @@ package org.example.bankproject.address.dto;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class AddressDto {
 
     @Size(min = 3, max = 50)

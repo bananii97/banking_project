@@ -13,7 +13,7 @@ import org.example.bankproject.identityCard.dto.IdentityCardDto;
 
 import java.time.LocalDate;
 
-@Builder(toBuilder = true)
+@Builder
 @Getter
 @AllArgsConstructor
 public class PersonDto {
@@ -31,7 +31,7 @@ public class PersonDto {
 
     private String nationalIdentityNumber;
 
-    @Past(message = "Niepoprawna data")
+    @Past(message = "Incorrect Date")
     private LocalDate dateOfBirth;
 
     @Valid
