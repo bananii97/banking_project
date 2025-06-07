@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="create-person-table" author="Krystian">
+        <createTable tableName="person">
+            <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)"/>
+            <column name="last_name" type="varchar(40)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="national_identity_number" type="varchar(11)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="gender" type="varchar(6)"/>
+            <column name="identity_card_id" type="bigint"/>
+            <column name="address_id" type="bigint"/>
+            <column name="phone_number" type="int"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="person" baseColumnNames="identity_card_id"
+                                 constraintName="fk_person_identity_card"
+                                 referencedTableName="identity_card"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="person" baseColumnNames="address_id" constraintName="fk_person_address"
+                                 referencedTableName="address"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
