@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 import org.example.bankproject.account.jpa.AccountRepository;
-import org.example.bankproject.iban.IbanGenerator;
 import org.example.bankproject.user.PersonService;
 import org.example.bankproject.user.jpa.Person;
 import org.junit.jupiter.api.Test;
@@ -31,40 +30,35 @@ public class AccountServiceTest {
     @Mock
     private PersonService  personService;
 
-    @Mock
-    private IbanGenerator ibanGenerator;
-
     @InjectMocks
     private AccountService accountService;
 
     @Test
-    void accountCreateTestShouldReturnAccount(){
+    void accountCreateShouldReturnAccount(){
         //given
         Person person = new Person();
         person.setAccounts(new ArrayList<>());
         Long personId = 1L;
 
         when(personService.findByPersonId(personId)).thenReturn(person);
-        when(ibanGenerator.createAccountNumber()).thenReturn("12145478945");
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
-        AccountDto accountDto = accountService.accountCreate(personId);
+        AccountDto accountDto = accountService.createAccount(personId);
 
         //then
         assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
-        assertThat(accountDto.getDateOpenAccount()).isEqualTo(LocalDate.now());
+        assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isTrue();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
         assertThat(accountDto.getBicNumber()).isEqualTo("sa");
 
         verify(personService,times(1)).findByPersonId(personId);
-        verify(ibanGenerator,times(1)).createAccountNumber();
         verify(accountRepository,times(1)).save(any(Account.class));
     }
 
     @Test
-    void testCreateAccountShouldNewAccountWherePrimaryAccountIsFalse(){
+    void createAccountShouldNewAccountWherePrimaryAccountIsFalse(){
         //given
         Person person = new Person();
         Account account = new Account();
@@ -73,34 +67,32 @@ public class AccountServiceTest {
         Long personId = 1L;
 
         when(personService.findByPersonId(personId)).thenReturn(person);
-        when(ibanGenerator.createAccountNumber()).thenReturn("12145478945");
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
-        AccountDto accountDto = accountService.accountCreate(personId);
+        AccountDto accountDto = accountService.createAccount(personId);
 
         //then
         assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
-        assertThat(accountDto.getDateOpenAccount()).isEqualTo(LocalDate.now());
+        assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isFalse();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
         assertThat(accountDto.getBicNumber()).isEqualTo("sa");
 
         verify(personService,times(1)).findByPersonId(personId);
-        verify(ibanGenerator,times(1)).createAccountNumber();
         verify(accountRepository,times(1)).save(any(Account.class));
     }
 
     @Test
-    void testAccountCreateWithPersonNotFoundException(){
+    void accountCreateWithPersonNotFoundException(){
         //given
         Long personId = 1L;
         String message = "Person with id: " + personId + " not found";
         when(personService.findByPersonId(personId)).thenThrow(new  EntityNotFoundException(message));
 
-        //then
+        //when then
         assertThatExceptionOfType(EntityNotFoundException.class)
-                .isThrownBy(() -> accountService.accountCreate(personId))
+                .isThrownBy(() -> accountService.createAccount(personId))
         .withMessage(message);
 
         verify(personService,times(1)).findByPersonId(personId);
@@ -143,7 +135,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void testFindByIdShouldReturnAccount(){
+    void findByIdShouldReturnAccount(){
         Long accountId = 1L;
         Account account = new Account();
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
@@ -157,7 +149,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void testFindByIdShouldThrowEntityNotFoundException(){
+    void findByIdShouldThrowEntityNotFoundException(){
         //given
         Long accountId = 1L;
         String message = "Account with id " + accountId + " not found";

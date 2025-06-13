@@ -16,7 +16,7 @@ public class AccountDto {
     private Person person;
     private String accountNumber;
     private String bicNumber;
-    private LocalDate dateOpenAccount;
+    private LocalDate accountOpenedAt;
     private BigDecimal balance;
     private boolean primaryAccount;
     private boolean isActive;
