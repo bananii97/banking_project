@@ -1,10 +1,8 @@
 package org.example.bankproject.account;
 
-import lombok.experimental.UtilityClass;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 
-@UtilityClass
 public class AccountMapper {
 
     public static AccountDto toDto(Account account){
@@ -12,7 +10,7 @@ public class AccountMapper {
                 .accountNumber(account.getAccountNumber())
                 .balance(account.getBalance())
                 .bicNumber(account.getBicNumber())
-                .accountOpenedAt(account.getAccountOpenedAt())
+                .dateOpenAccount(account.getDateOpenAccount())
                 .person(account.getPerson())
                 .primaryAccount(account.isPrimaryAccount())
                 .build();

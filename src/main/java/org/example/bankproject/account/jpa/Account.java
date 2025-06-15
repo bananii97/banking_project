@@ -27,10 +27,11 @@ public class Account {
     private Person person;
 
     private String accountNumber;
-    private String bicNumber = "BREXPLPWXXX";
-    private LocalDate accountOpenedAt = LocalDate.now();
-    private BigDecimal balance = new BigDecimal(BigInteger.ZERO);
     private boolean primaryAccount;
-    private boolean isActive = Boolean.TRUE;
-    private boolean softDeleted = Boolean.FALSE;
+    private BigDecimal balance = BigDecimal.ZERO;
+    private boolean isActive = true;
+    private boolean softDeleted;
+    private LocalDate accountOpenedAt = LocalDate.now();
+
+    private static final String bicNumber = "BREXPLPWXXX";
 }
