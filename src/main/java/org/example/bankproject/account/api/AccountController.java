@@ -15,11 +15,11 @@ public class AccountController {
 
     @GetMapping("/create/{personId}")
     public AccountDto createAccount(@PathVariable("personId") long personId) {
-        return accountService.createAccount(personId);
+        return accountService.accountCreate(personId);
     }
 
     @DeleteMapping("/delete/{personId}/{accountId}")
-    public void deactivate(@PathVariable("personId") long personId, @PathVariable("accountId") long accountId) {
+    public void deleteAccount(@PathVariable("personId") long personId, @PathVariable("accountId") long accountId) {
         accountService.softDelete(personId, accountId);
     }
 }
