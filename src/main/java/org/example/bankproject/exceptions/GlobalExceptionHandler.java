@@ -10,7 +10,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto handleException(RuntimeException exception){
-        return new ExceptionDto(exception.getMessage());
+    public ExceptionResponse handleException(RuntimeException exception){
+        return new ExceptionResponse(exception.getMessage());
     }
 }
