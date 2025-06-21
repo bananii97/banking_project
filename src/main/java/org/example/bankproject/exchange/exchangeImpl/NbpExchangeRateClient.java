@@ -4,7 +4,7 @@ import org.example.bankproject.exchange.model.ExchangeRate;
 import org.example.bankproject.exchange.model.Rate;
 import org.example.bankproject.exchange.model.RateTable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
@@ -12,29 +12,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class NbpExchangeRateClient implements ExternalApiClient{
+public class NbpExchangeRateClient implements ExternalApiClient {
 
     private static final Set<String> SUPPORTED_CURRENCIES = Set.of("USD", "EUR", "GBP", "CHF");
-    private final WebClient webClient;
+    private final RestClient restClient;
 
-    public NbpExchangeRateClient(WebClient webClient) {
-        this.webClient = webClient;
+    public NbpExchangeRateClient(RestClient restClient) {
+        this.restClient = restClient;
     }
 
-    @Override
     public Map<String, ExchangeRate> getRates() {
-        List<RateTable> rateTable = webClient.get()
+        RateTable[] rateTables = restClient.get()
                 .uri("/exchangerates/tables/C/?format=json")
                 .retrieve()
-                .bodyToFlux(RateTable.class)
-                .collectList()
-                .block();
+                .body(RateTable[].class);
 
-        if (rateTable == null || rateTable.isEmpty()) {
+        if (rateTables == null || rateTables.length == 0) {
             return Map.of();
         }
 
-        List<Rate> rates = rateTable.get(0).getRates();
+        List<Rate> rates = rateTables[0].getRates();
 
         return rates.stream()
                 .filter(rate -> SUPPORTED_CURRENCIES.contains(rate.getCode()))
