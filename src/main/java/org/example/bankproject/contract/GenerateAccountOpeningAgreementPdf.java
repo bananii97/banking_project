@@ -6,19 +6,17 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Map;
 
 @Component
-public class ContractGenerator {
+public class GenerateAccountOpeningAgreementPdf {
 
-    public void GeneratedContractPdf(Map<String,String> data){
-        try (InputStream in = new FileInputStream("C:\\Users\\kryst\\Desktop\\Umowa bankowa.docx")) {
+    public void generateContractPdf(Map<String, String> data) {
+        try (InputStream in = new ClassPathResource("templates/Umowa_bankowa.docx").getInputStream()) {
             XWPFDocument doc = new XWPFDocument(in);
 
             for (XWPFParagraph paragraph : doc.getParagraphs()) {
@@ -33,15 +31,21 @@ public class ContractGenerator {
                 }
             }
 
-            convertToPdf(doc, "C:\\Users\\kryst\\Desktop\\Umowa_bankowa.pdf");
+            File outputFolder = new File("target/output");
+            if (!outputFolder.exists()) {
+                outputFolder.mkdirs();
+            }
+
+            File pdfFile = new File(outputFolder, "Umowa bankowa.pdf");
+            convertToPdf(doc, pdfFile);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void convertToPdf(XWPFDocument doc, String outputPdfPath) {
-        try (OutputStream out = new FileOutputStream(outputPdfPath)) {
+    private void convertToPdf(XWPFDocument doc, File outputPdfFile) {
+        try (OutputStream out = new FileOutputStream(outputPdfFile)) {
             Document pdf = new Document();
             PdfWriter.getInstance(pdf, out);
             pdf.open();
