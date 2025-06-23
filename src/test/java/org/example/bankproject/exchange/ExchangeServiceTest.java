@@ -36,6 +36,6 @@ public class ExchangeServiceTest {
 
         //then
         assertEquals(2, result.size());
-        assertEquals(3.5, result.get("USD").getBuy());
+        assertEquals(3.5, result.get("USD").buy());
     }
 }
