@@ -15,6 +15,7 @@ public class IbanGenerator {
 
     private static final String bankCode = "1140";
     private static final String plCountryCodeNumeric = "002521";
+    private static final int accountNumberRandomPartLength = 12;
 
     public String createAccountNumber(String branchCode) {
         String accountNumber = "";
@@ -37,7 +38,7 @@ public class IbanGenerator {
     private static String generateRandomDigits() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder(12);
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < accountNumberRandomPartLength; i++) {
             sb.append(random.nextInt(10));
         }
         return sb.toString();
