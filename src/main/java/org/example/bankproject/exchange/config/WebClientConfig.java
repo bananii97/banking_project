@@ -10,7 +10,7 @@ public class WebClientConfig {
     @Bean
     public RestClient restClient(RestClient.Builder builder) {
         return builder
-                .baseUrl("https://api.nbp.pl/api") // upewnij się, że masz właściwą bazową ścieżkę
+                .baseUrl("https://api.nbp.pl/api")
                 .build();
     }
 }
