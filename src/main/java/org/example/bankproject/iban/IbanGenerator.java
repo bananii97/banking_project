@@ -2,10 +2,9 @@ package org.example.bankproject.iban;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bankproject.account.jpa.AccountRepository;
-import org.iban4j.CountryCode;
-import org.iban4j.Iban;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 @Component
@@ -14,27 +13,32 @@ public class IbanGenerator {
 
     private final AccountRepository accountRepository;
 
-    public String createAccountNumber() {
-        String iban;
-        do {
-            iban = IbanGenerator.generateIban().toString();
+    private static final String bankCode = "1140";
+    private static final String plCountryCodeNumeric = "002521";
+    private static final int accountNumberRandomPartLength = 12;
 
-        } while (accountRepository.existsByIban(iban));
-        return iban;
+    public String createAccountNumber(String branchCode) {
+        String accountNumber = "";
+        do {
+            String clientNumber = generateRandomDigits();
+            accountNumber = "PL" + checkControlSum(branchCode, generateRandomDigits())
+                    + bankCode + branchCode + clientNumber;
+
+        } while (accountRepository.existsByAccountNumber(accountNumber));
+        return accountNumber;
     }
 
-    private static Iban generateIban() {
-        return new Iban.Builder()
-                .countryCode(CountryCode.PL)
-                .bankCode("1140")
-                .accountNumber(generateRandomDigits())
-                .build();
+    private String checkControlSum(String branchCode, String randomDigits) {
+        BigInteger sum = new BigInteger(bankCode + branchCode + randomDigits + plCountryCodeNumeric);
+        BigInteger checkNumber = new BigInteger("98").subtract(sum.mod(new BigInteger("97")));
+
+        return checkNumber.toString();
     }
 
     private static String generateRandomDigits() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(16);
-        for (int i = 0; i < 16; i++) {
+        StringBuilder sb = new StringBuilder(12);
+        for (int i = 0; i < accountNumberRandomPartLength; i++) {
             sb.append(random.nextInt(10));
         }
         return sb.toString();
