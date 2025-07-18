@@ -1,5 +1,6 @@
 package org.example.bankproject.user.jpa;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.bankproject.account.jpa.Account;
@@ -39,6 +40,7 @@ public class Person {
     private Address address;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Account> accounts;
 
     private int phoneNumber;

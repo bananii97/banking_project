@@ -1,4 +1,4 @@
-package org.example.bankproject.exceptions;
+package org.example.bankproject.exceptions.handling;
 
 import java.util.ArrayList;
 import java.util.List;

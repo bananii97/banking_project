@@ -31,13 +31,12 @@ public class IbanGenerator {
     private String checkControlSum(String branchCode, String randomDigits) {
         BigInteger sum = new BigInteger(bankCode + branchCode + randomDigits + plCountryCodeNumeric);
         BigInteger checkNumber = new BigInteger("98").subtract(sum.mod(new BigInteger("97")));
-
         return checkNumber.toString();
     }
 
     private static String generateRandomDigits() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(12);
+        StringBuilder sb = new StringBuilder(16);
         for (int i = 0; i < accountNumberRandomPartLength; i++) {
             sb.append(random.nextInt(10));
         }

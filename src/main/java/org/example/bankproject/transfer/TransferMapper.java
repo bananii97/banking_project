@@ -9,8 +9,8 @@ public class TransferMapper {
 
     public static Transfer fromDto(TransferDto transferDto) {
         return Transfer.builder()
-                .fromAccount(transferDto.getFromAccount())
-                .ToAccount(transferDto.getToAccount())
+                .fromAccountNumber(transferDto.getFromAccountNumber())
+                .toAccountNumber(transferDto.getToAccountNumber())
                 .amount(transferDto.getAmount())
                 .dateTransfer(transferDto.getDateTransfer())
                 .build();
@@ -18,9 +18,10 @@ public class TransferMapper {
 
     public static TransferDto toDto(Transfer transfer) {
         return TransferDto.builder()
-                .fromAccount(transfer.getFromAccount())
-                .ToAccount(transfer.getToAccount())
+                .fromAccountNumber(transfer.getFromAccountNumber())
+                .toAccountNumber(transfer.getToAccountNumber())
                 .amount(transfer.getAmount())
+                .title(transfer.getTitle())
                 .dateTransfer(transfer.getDateTransfer())
                 .build();
     }

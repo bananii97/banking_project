@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 import org.example.bankproject.account.jpa.AccountRepository;
+import org.example.bankproject.iban.IbanGenerator;
 import org.example.bankproject.user.PersonService;
 import org.example.bankproject.user.jpa.Person;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class AccountServiceTest {
     @Mock
     private PersonService  personService;
 
+    @Mock
+    private IbanGenerator ibanGenerator;
+
     @InjectMocks
     private AccountService accountService;
 
@@ -41,17 +45,18 @@ public class AccountServiceTest {
         Long personId = 1L;
 
         when(personService.findByPersonId(personId)).thenReturn(person);
+        when(ibanGenerator.createAccountNumber("0120")).thenReturn("PL50114014788521963285218741");
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
         AccountDto accountDto = accountService.createAccount(personId);
 
         //then
-        assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
+        assertThat(accountDto.getAccountNumber()).isEqualTo("PL50114014788521963285218741");
         assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isTrue();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
-        assertThat(accountDto.getBicNumber()).isEqualTo("sa");
+        assertThat(accountDto.getBicNumber()).isEqualTo("BREXPLPWXXX");
 
         verify(personService,times(1)).findByPersonId(personId);
         verify(accountRepository,times(1)).save(any(Account.class));
@@ -67,17 +72,18 @@ public class AccountServiceTest {
         Long personId = 1L;
 
         when(personService.findByPersonId(personId)).thenReturn(person);
+        when(ibanGenerator.createAccountNumber("0120")).thenReturn("PL50114014788521963285218741");
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
         AccountDto accountDto = accountService.createAccount(personId);
 
         //then
-        assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
+        assertThat(accountDto.getAccountNumber()).isEqualTo("PL50114014788521963285218741");
         assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isFalse();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
-        assertThat(accountDto.getBicNumber()).isEqualTo("sa");
+        assertThat(accountDto.getBicNumber()).isEqualTo("BREXPLPWXXX");
 
         verify(personService,times(1)).findByPersonId(personId);
         verify(accountRepository,times(1)).save(any(Account.class));

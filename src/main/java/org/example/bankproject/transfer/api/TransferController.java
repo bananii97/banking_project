@@ -1,10 +1,9 @@
 package org.example.bankproject.transfer.api;
 
-
 import lombok.RequiredArgsConstructor;
+import org.example.bankproject.account.AccountService;
 import org.example.bankproject.transfer.TransferService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,4 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransferController {
 
     private final TransferService transferService;
+    private final AccountService accountService;
+
+    @PostMapping("/makeTransfer")
+    public TransferDto getTransfer(@RequestBody  TransferDto transferDto) {
+        accountService.checkAccountIsActive(transferDto.getFromAccountNumber());
+        return transferService.makeTransfer(transferDto);
+    }
 }
