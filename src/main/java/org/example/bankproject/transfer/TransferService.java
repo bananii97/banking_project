@@ -21,56 +21,68 @@ public class TransferService {
     private final TransferRepository transferRepository;
     private final AccountService accountService;
 
-    private static final String iban = "1140";
+    private static final String localBankCode = "1140";
 
     @Transactional
     public TransferDto makeTransfer(TransferDto transferDto) {
-        int expectedLength = 28;
         Account fromAccount = accountService.findByAccountNumber(transferDto.getFromAccountNumber());
+        String toAccount = transferDto.getToAccountNumber();
         BigDecimal amount = transferDto.getAmount();
         String title = transferDto.getTitle();
 
-        if (!(transferDto.getToAccountNumber().length() == expectedLength && transferDto.getFromAccountNumber().length() == expectedLength)) {
+        validateTransferData(fromAccount, toAccount, amount);
+
+        if (transferDto.getToAccountNumber().substring(4, 8).equals(localBankCode)) {
+            return processInternalTransfer(transferDto, fromAccount, title, amount);
+
+        } else {
+            return processExternalTransfer(fromAccount, toAccount, title, amount);
+        }
+    }
+
+    public void validateTransferData(Account fromAccount, String toAccountNumber, BigDecimal amount) {
+        int expectedLength = 28;
+        if (!(toAccountNumber.length() == expectedLength && fromAccount.getAccountNumber().length() == expectedLength)) {
             throw new InvalidAccountNumberException("Account number must have 26 characters");
         }
 
-        if (fromAccount.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) <= 0) {
+        if (fromAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new InsufficientFundsException("Insufficient Funds");
         }
+    }
 
-        if (transferDto.getToAccountNumber().substring(4, 8).equals(iban)) {
-            Account toAccount = accountService.findByAccountNumber(transferDto.getToAccountNumber());
+    public TransferDto processInternalTransfer(TransferDto transferDto, Account fromAccount, String title, BigDecimal amount) {
+        Account toAccount = accountService.findByAccountNumber(transferDto.getToAccountNumber());
 
-            fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-            toAccount.setBalance(toAccount.getBalance().add(amount));
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        toAccount.setBalance(toAccount.getBalance().add(amount));
 
-            accountService.saveAccount(fromAccount);
-            accountService.saveAccount(toAccount);
+        accountService.saveAccount(fromAccount);
+        accountService.saveAccount(toAccount);
 
-            Transfer transfer = Transfer.builder()
-                    .fromAccountNumber(fromAccount.getAccountNumber())
-                    .toAccountNumber(toAccount.getAccountNumber())
-                    .title(title)
-                    .amount(amount)
-                    .dateTransfer(LocalDateTime.now())
-                    .build();
+        Transfer transfer = Transfer.builder()
+                .fromAccountNumber(fromAccount.getAccountNumber())
+                .toAccountNumber(toAccount.getAccountNumber())
+                .title(title)
+                .amount(amount)
+                .dateTransfer(LocalDateTime.now())
+                .build();
 
-            return TransferMapper.toDto(transferRepository.save(transfer));
+        return TransferMapper.toDto(transferRepository.save(transfer));
+    }
 
-        } else {
+    public TransferDto processExternalTransfer(Account fromAccount, String toAccountNumber, String title, BigDecimal amount) {
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        accountService.saveAccount(fromAccount);
 
-            fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-            accountService.saveAccount(fromAccount);
+        Transfer transfer = Transfer.builder()
+                .fromAccountNumber(fromAccount.getAccountNumber())
+                .toAccountNumber(toAccountNumber)
+                .title(title)
+                .amount(amount)
+                .dateTransfer(LocalDateTime.now())
+                .build();
 
-            Transfer transfer = Transfer.builder()
-                    .fromAccountNumber(fromAccount.getAccountNumber())
-                    .toAccountNumber(transferDto.getToAccountNumber())
-                    .title(title)
-                    .amount(amount)
-                    .dateTransfer(LocalDateTime.now())
-                    .build();
-
-            return TransferMapper.toDto(transferRepository.save(transfer));
-        }
+        return TransferMapper.toDto(transferRepository.save(transfer));
     }
 }

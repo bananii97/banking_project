@@ -29,7 +29,7 @@ public class AccountService {
         boolean isFirstAccount = person.getAccounts().isEmpty();
 
         Account account = Account.builder()
-                .balance(new BigDecimal(0))
+                .balance(new BigDecimal(100))
                 .isActive(Boolean.TRUE)
                 .accountNumber(ibanGenerator.createAccountNumber("0120"))
                 .person(person)

@@ -15,7 +15,7 @@ public class IbanGenerator {
 
     private static final String bankCode = "1140";
     private static final String plCountryCodeNumeric = "002521";
-    private static final int accountNumberRandomPartLength = 12;
+    private static final int accountNumberRandomPartLength = 16;
 
     public String createAccountNumber(String branchCode) {
         String accountNumber = "";

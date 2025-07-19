@@ -17,12 +17,12 @@ public class TransferMapperTest {
             "PL50114020040000123412348822,PL58245874589632145825784512,100",
             "PL44556677885874515484856985,PL45678912345678913658741852,2500"
     })
-    void shouldMapFromDtoToEntityCorrectly(String fromAccount, String toAccount, String amountStr) {
+    void shouldMapFromDtoToEntityCorrectly(String fromAccount, String toAccount, String amount) {
         // given
         TransferDto transferDto = TransferDto.builder()
                 .fromAccountNumber(fromAccount)
                 .toAccountNumber(toAccount)
-                .amount(new BigDecimal(amountStr))
+                .amount(new BigDecimal(amount))
                 .dateTransfer(LocalDateTime.now())
                 .build();
 
@@ -42,12 +42,12 @@ public class TransferMapperTest {
             "PL44556677885874515484856985,NULL,250",
             "PL58245874589632145825784512,PL50114020040000123412348822,NULL"
     }, nullValues = "NULL")
-    void shouldMapFromDtoToEntityWithNulls(String fromAccount, String toAccount, String amountStr) {
+    void shouldMapFromDtoToEntityWithNulls(String fromAccount, String toAccount, String amount) {
         // given
         TransferDto transferDto = TransferDto.builder()
                 .fromAccountNumber(fromAccount)
                 .toAccountNumber(toAccount)
-                .amount(amountStr != null ? new BigDecimal(amountStr) : null)
+                .amount(new BigDecimal(amount))
                 .dateTransfer(LocalDateTime.now())
                 .build();
 
@@ -67,12 +67,12 @@ public class TransferMapperTest {
             "PL50114020040000123412348822,NULL,250",
             "PL50114020040000123412348822,PL44556677885874515484856985,NULL"
     }, nullValues = "NULL")
-    void shouldMapToDtoFromEntityWithNulls(String fromAccount, String toAccount, String amountStr) {
+    void shouldMapToDtoFromEntityWithNulls(String fromAccount, String toAccount, String amount) {
         // given
         Transfer transfer = Transfer.builder()
                 .fromAccountNumber(fromAccount)
                 .toAccountNumber(toAccount)
-                .amount(amountStr != null ? new BigDecimal(amountStr) : null)
+                .amount(new BigDecimal(amount))
                 .dateTransfer(LocalDateTime.now())
                 .build();
 
@@ -91,12 +91,12 @@ public class TransferMapperTest {
             "PL50114020040000123412348822,PL44556677885874515484856985,100",
             "PL44556677885874515484856985,PL50114020040000123412348822,1"
     })
-    void shouldMapToDtoFromEntityCorrectly(String fromAccount, String toAccount, String amountStr) {
+    void shouldMapToDtoFromEntityCorrectly(String fromAccount, String toAccount, String amount) {
         // given
         Transfer transfer = Transfer.builder()
                 .fromAccountNumber(fromAccount)
                 .toAccountNumber(toAccount)
-                .amount(new BigDecimal(amountStr))
+                .amount(new BigDecimal(amount))
                 .dateTransfer(LocalDateTime.now())
                 .build();
 
