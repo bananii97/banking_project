@@ -40,5 +40,5 @@ public class PersonDto {
     @Valid
     private AddressDto addressDto;
 
-    private int phoneNumber;
+    private String phoneNumber;
 }
