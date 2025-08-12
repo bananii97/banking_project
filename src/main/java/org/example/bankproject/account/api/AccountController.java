@@ -13,9 +13,10 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/create/{personId}")
-    public AccountDto createAccount(@PathVariable("personId") long personId) {
-        return accountService.accountCreate(personId);
+    @GetMapping("/create/{personId}/{bankBranchCode}")
+    public AccountDto createAccount(@PathVariable("personId") long personId,
+                                    @PathVariable("bankBranchCode")  String bankBranchCode) {
+        return accountService.createAccount(personId,  bankBranchCode);
     }
 
     @DeleteMapping("/delete/{personId}/{accountId}")

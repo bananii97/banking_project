@@ -14,12 +14,12 @@ public class AccountMapperTest {
 
     @ParameterizedTest
     @CsvSource({
-            "ASD123123,1000.50,SA123456,2023-12-12,true",
-            "AAA111222,250.00,PL654321,2026-02-01,false",
-            "BBB333444,0.00,GB987654,2028-07-15,true",
-            "XYZ999888,9999.99,DE456789,2030-11-30,false"
+            "ASD123123,1000.50,2023-12-12,true",
+            "AAA111222,250.00,2026-02-01,false",
+            "BBB333444,0.00,2028-07-15,true",
+            "XYZ999888,9999.99,2030-11-30,false"
     })
-    void shouldMapAccountToAccountDto(String accountNumber, String balance, String bicNumber,
+    void shouldMapAccountToAccountDto(String accountNumber, String balance,
                                                String DateOpenAccount, boolean primaryAccount) {
         //given
         LocalDate date = LocalDate.parse(DateOpenAccount);
@@ -36,26 +36,24 @@ public class AccountMapperTest {
         //then
         assertEquals(accountNumber, accountDto.getAccountNumber());
         assertEquals(new BigDecimal(balance), accountDto.getBalance());
-        assertEquals(bicNumber, accountDto.getBicNumber());
         assertEquals(date, accountDto.getAccountOpenedAt());
         assertEquals(primaryAccount, accountDto.isPrimaryAccount());
     }
 
     @ParameterizedTest
     @CsvSource(value = {
-            "NUll,1000.50,SA123456,2023-12-12,true",
-            "AAA111222,10,PL654321,2026-02-01,false",
-            "BBB333444,0.00,NUll,2028-07-15,true",
-            "XYZ999888,9999.99,DE456789,2026-02-01,false"
+            "NUll,1000.50,2023-12-12,true",
+            "AAA111222,10,2026-02-01,false",
+            "BBB333444,0.00,2028-07-15,true",
+            "XYZ999888,9999.99,2026-02-01,false"
     }, nullValues = "NULL")
-    void shouldHandleNullFieldsGracefullyWhenMappingAccountToDto(String accountNumber, String balance, String bicNumber, String DateOpenAccount,
+    void shouldHandleNullFieldsGracefullyWhenMappingAccountToDto(String accountNumber, String balance, String DateOpenAccount,
                                                          boolean primaryAccount) {
         //given
         LocalDate date = LocalDate.parse(DateOpenAccount);
         Account account = Account.builder()
                 .accountNumber(accountNumber)
                 .balance(new BigDecimal(balance))
-
                 .accountOpenedAt(date)
                 .primaryAccount(primaryAccount)
                 .build();
@@ -66,7 +64,6 @@ public class AccountMapperTest {
         //then
         assertEquals(accountNumber, accountDto.getAccountNumber());
         assertEquals(new BigDecimal(balance), accountDto.getBalance());
-        assertEquals(bicNumber, accountDto.getBicNumber());
         assertEquals(date, accountDto.getAccountOpenedAt());
         assertEquals(primaryAccount, accountDto.isPrimaryAccount());
     }
