@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 import org.example.bankproject.account.jpa.AccountRepository;
+import org.example.bankproject.iban.IbanGenerator;
 import org.example.bankproject.user.PersonService;
 import org.example.bankproject.user.jpa.Person;
 import org.junit.jupiter.api.Test;
@@ -24,11 +25,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 
+    public static final String bicNumber = "BREXPLPWXXX";
+
     @Mock
     private AccountRepository accountRepository;
 
     @Mock
     private PersonService  personService;
+
+    @Mock
+    private IbanGenerator ibanGenerator;
 
     @InjectMocks
     private AccountService accountService;
@@ -39,19 +45,22 @@ public class AccountServiceTest {
         Person person = new Person();
         person.setAccounts(new ArrayList<>());
         Long personId = 1L;
+        String iban = "PL12345678901234567890123456";
+        String bankBranchCode = "0050";
 
         when(personService.findByPersonId(personId)).thenReturn(person);
+        when(ibanGenerator.createAccountNumber(bankBranchCode)).thenReturn(iban);
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
-        AccountDto accountDto = accountService.createAccount(personId);
+        AccountDto accountDto = accountService.createAccount(personId,bankBranchCode);
 
         //then
-        assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
+        assertThat(accountDto.getAccountNumber()).isEqualTo(iban);
         assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isTrue();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
-        assertThat(accountDto.getBicNumber()).isEqualTo("sa");
+        assertThat(accountDto.getBicNumber()).isEqualTo(bicNumber);
 
         verify(personService,times(1)).findByPersonId(personId);
         verify(accountRepository,times(1)).save(any(Account.class));
@@ -64,20 +73,23 @@ public class AccountServiceTest {
         Account account = new Account();
         person.setAccounts(new ArrayList<>());
         person.getAccounts().add(account);
+        String bankBranchCode = "0050";
+        String iban = "PL12345678901234567890123456";
         Long personId = 1L;
 
         when(personService.findByPersonId(personId)).thenReturn(person);
+        when(ibanGenerator.createAccountNumber(bankBranchCode)).thenReturn(iban);
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
 
         //when
-        AccountDto accountDto = accountService.createAccount(personId);
+        AccountDto accountDto = accountService.createAccount(personId,bankBranchCode);
 
         //then
-        assertThat(accountDto.getAccountNumber()).isEqualTo("12145478945");
+        assertThat(accountDto.getAccountNumber()).isEqualTo(iban);
         assertThat(accountDto.getAccountOpenedAt()).isEqualTo(LocalDate.now());
         assertThat(accountDto.isPrimaryAccount()).isFalse();
         assertThat(accountDto.getBalance()).isEqualTo(new BigDecimal("0"));
-        assertThat(accountDto.getBicNumber()).isEqualTo("sa");
+        assertThat(accountDto.getBicNumber()).isEqualTo(bicNumber);
 
         verify(personService,times(1)).findByPersonId(personId);
         verify(accountRepository,times(1)).save(any(Account.class));
@@ -87,12 +99,13 @@ public class AccountServiceTest {
     void shouldThrowPersonNotFoundExceptionWhenCreatingAccountWithNonExistentPerson(){
         //given
         Long personId = 1L;
+        String bankBranchCode = "0050";
         String message = "Person with id: " + personId + " not found";
         when(personService.findByPersonId(personId)).thenThrow(new  EntityNotFoundException(message));
 
         //when then
         assertThatExceptionOfType(EntityNotFoundException.class)
-                .isThrownBy(() -> accountService.createAccount(personId))
+                .isThrownBy(() -> accountService.createAccount(personId,bankBranchCode))
         .withMessage(message);
 
         verify(personService,times(1)).findByPersonId(personId);
