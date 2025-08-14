@@ -1,12 +1,10 @@
 package org.example.bankproject.account.jpa;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.bankproject.user.jpa.Person;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Getter
@@ -18,6 +16,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class Account {
 
+    public static final String bicNumber = "BREXPLPWXXX";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,10 +28,14 @@ public class Account {
 
     private String accountNumber;
     private boolean primaryAccount;
-    private BigDecimal balance = BigDecimal.ZERO;
-    private boolean isActive = true;
     private boolean softDeleted;
-    private LocalDate accountOpenedAt = LocalDate.now();
 
-    private static final String bicNumber = "BREXPLPWXXX";
+    @Builder.Default
+    private boolean isActive = true;
+
+    @Builder.Default
+    private BigDecimal balance = new  BigDecimal(0);
+
+    @Builder.Default
+    private LocalDate accountOpenedAt = LocalDate.now();
 }

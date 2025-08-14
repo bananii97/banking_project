@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 import org.example.bankproject.account.jpa.AccountRepository;
+import org.example.bankproject.iban.IbanGenerator;
 import org.example.bankproject.user.PersonService;
 import org.example.bankproject.user.jpa.Person;
 
@@ -15,14 +16,14 @@ public class AccountService {
     private final IbanGenerator ibanGenerator;
     private final PersonService personService;
 
-    public AccountDto createAccount(Long personId) {
+    public AccountDto createAccount(Long personId,String bankBranchCode) {
 
         Person person = personService.findByPersonId(personId);
 
         boolean isFirstAccount = person.getAccounts().isEmpty();
 
         Account account = Account.builder()
-                .accountNumber(ibanGenerator.createAccountNumber)
+                .accountNumber(ibanGenerator.createAccountNumber(bankBranchCode))
                 .person(person)
                 .primaryAccount(isFirstAccount)
                 .build();
