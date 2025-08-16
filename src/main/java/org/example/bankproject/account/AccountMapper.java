@@ -9,7 +9,7 @@ public class AccountMapper {
         return AccountDto.builder()
                 .accountNumber(account.getAccountNumber())
                 .balance(account.getBalance())
-                .bicNumber("BREXPLPWXXX")
+                .bicNumber(account.bicNumber)
                 .accountOpenedAt(account.getAccountOpenedAt())
                 .person(account.getPerson())
                 .primaryAccount(account.isPrimaryAccount())

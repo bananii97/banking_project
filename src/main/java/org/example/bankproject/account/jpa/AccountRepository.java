@@ -7,6 +7,5 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account,Long> {
 
     boolean existsByAccountNumber(String iban);
-    Account findByAccountNumber(String accountNumber);
     Optional<Account> findByIdAndPersonId(Long personId, Long accountId);
 }

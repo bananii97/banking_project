@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "person")
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Person {
@@ -43,5 +43,5 @@ public class Person {
     @JsonManagedReference
     private List<Account> accounts;
 
-    private int phoneNumber;
+    private String phoneNumber;
 }

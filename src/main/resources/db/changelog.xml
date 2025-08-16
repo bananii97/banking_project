@@ -34,7 +34,7 @@
             <column name="address_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="phone_number" type="INT">
+            <column name="phone_number" type="varchar(9)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

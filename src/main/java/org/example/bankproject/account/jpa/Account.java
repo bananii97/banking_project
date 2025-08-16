@@ -1,10 +1,8 @@
 package org.example.bankproject.account.jpa;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.bankproject.user.jpa.Person;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,23 +16,26 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class Account {
 
+    public static final String bicNumber = "BREXPLPWXXX";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="person_id")
-    @JsonBackReference
     private Person person;
 
     private String accountNumber;
     private boolean primaryAccount;
-    private BigDecimal balance;
-    private boolean isActive = true;
     private boolean softDeleted;
 
-    @CreationTimestamp
-    private LocalDate accountOpenedAt;
+    @Builder.Default
+    private boolean isActive = true;
 
-    private static final String bicNumber = "BREXPLPWXXX";
+    @Builder.Default
+    private BigDecimal balance = new  BigDecimal(0);
+
+    @Builder.Default
+    private LocalDate accountOpenedAt = LocalDate.now();
 }

@@ -39,7 +39,7 @@ public class VerificationTest {
                 .email("krzy@gmail.com")
                 .identityCardDto(identityCardDto)
                 .addressDto(addressDto)
-                .phoneNumber(456789789)
+                .phoneNumber("456789789")
                 .build();
     }
 
