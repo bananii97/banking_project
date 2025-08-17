@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode
 @Getter
 public class TransferDto {
@@ -20,7 +20,7 @@ public class TransferDto {
     private String toAccountNumber;
 
     @NotNull(message = "Transfer amount is required")
-    @DecimalMin(value = "0.01", inclusive = true, message = "Transfer amount must be greater than 0")
+    @DecimalMin(value = "0.01", inclusive = true, message = "Transfer amount must be greater than 0.01")
     private BigDecimal amount;
 
     @NotBlank(message = "Transfer title is required")

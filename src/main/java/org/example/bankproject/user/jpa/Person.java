@@ -40,7 +40,6 @@ public class Person {
     private Address address;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Account> accounts;
 
     private String phoneNumber;

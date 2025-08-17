@@ -1,5 +1,6 @@
 package org.example.bankproject.transfer.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.bankproject.account.AccountService;
 import org.example.bankproject.transfer.TransferService;
@@ -14,7 +15,7 @@ public class TransferController {
     private final AccountService accountService;
 
     @PostMapping("/makeTransfer")
-    public TransferDto getTransfer(@RequestBody  TransferDto transferDto) {
+    public TransferDto getTransfer(@RequestBody @Valid TransferDto transferDto) {
         accountService.checkAccountIsActive(transferDto.getFromAccountNumber());
         return transferService.makeTransfer(transferDto);
     }
