@@ -55,7 +55,7 @@ public class AccountService {
                 .orElseThrow(() -> new EntityNotFoundException("Account with account number " + accountNumber + " not found"));
     }
 
-    public void checkAccountIsActive(String accountNumber) {
+    public void throwIfAccountInactive(String accountNumber) {
         Account account = findByAccountNumber(accountNumber);
         if (!account.isActive()) {
             throw new AccountInActiveException("Account with id " + account.getId() + " is not active");

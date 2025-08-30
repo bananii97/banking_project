@@ -24,13 +24,15 @@ public class TransferService {
     private static final String localBankCode = "1140";
     private static final int polishIbanTotalLength = 28;
     private static final int accountNumberDigits = 26;
+    private static final int bankCodeStart = 4;
+    private static final int bankCodeEnd = 8;
 
     @Transactional
     public TransferDto makeTransfer(TransferDto transferDto) {
         Account fromAccount = accountService.findByAccountNumber(transferDto.getFromAccountNumber());
 
         TransferRequest transferRequest = TransferRequest.builder()
-                .fromAccountNumber(fromAccount)
+                .fromAccountNumber(transferDto.getFromAccountNumber())
                 .toAccountNumber(transferDto.getToAccountNumber())
                 .amount(transferDto.getAmount())
                 .title(transferDto.getTitle())
@@ -42,7 +44,7 @@ public class TransferService {
     }
 
     public boolean belongsToOurBank(TransferRequest transferRequest) {
-        return transferRequest.getToAccountNumber().substring(4, 8).equals(localBankCode);
+        return transferRequest.getToAccountNumber().substring(bankCodeStart, bankCodeEnd).equals(localBankCode);
     }
 
     public void validateTransferData(TransferDto transferDto, Account fromAccount) {
@@ -72,7 +74,7 @@ public class TransferService {
     }
 
     public TransferDto processTransfer(TransferRequest transferRequest) {
-        Account fromAccount = transferRequest.getFromAccountNumber();
+        Account fromAccount = accountService.findByAccountNumber(transferRequest.getFromAccountNumber());
         BigDecimal amount = transferRequest.getAmount();
         String title = transferRequest.getTitle();
 

@@ -227,7 +227,7 @@ public class AccountServiceTest {
         when(accountRepository.findByAccountNumber(account.getAccountNumber())).thenReturn(Optional.of(account));
 
         //when then
-        assertDoesNotThrow(() -> accountService.checkAccountIsActive(account.getAccountNumber()));
+        assertDoesNotThrow(() -> accountService.throwIfAccountInactive(account.getAccountNumber()));
         verify(accountRepository, times(1)).findByAccountNumber(account.getAccountNumber());
     }
 
@@ -241,7 +241,7 @@ public class AccountServiceTest {
 
         //when then
         assertThatExceptionOfType(AccountInActiveException.class)
-                .isThrownBy(() -> accountService.checkAccountIsActive(account.getAccountNumber()))
+                .isThrownBy(() -> accountService.throwIfAccountInactive(account.getAccountNumber()))
                 .withMessage(message);
         verify(accountRepository, times(1)).findByAccountNumber(account.getAccountNumber());
         verifyNoMoreInteractions(accountRepository);

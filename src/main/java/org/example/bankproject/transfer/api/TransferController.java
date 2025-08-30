@@ -16,7 +16,7 @@ public class TransferController {
 
     @PostMapping("/makeTransfer")
     public TransferDto getTransfer(@RequestBody @Valid TransferDto transferDto) {
-        accountService.checkAccountIsActive(transferDto.getFromAccountNumber());
+        accountService.throwIfAccountInactive(transferDto.getFromAccountNumber());
         return transferService.makeTransfer(transferDto);
     }
 }

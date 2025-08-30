@@ -8,7 +8,6 @@ import org.example.bankproject.transfer.api.TransferDto;
 import org.example.bankproject.transfer.jpa.Transfer;
 import org.example.bankproject.transfer.jpa.TransferRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -68,7 +67,7 @@ public class TransferServiceTest {
                 .build();
 
         transferRequest = TransferRequest.builder()
-                .fromAccountNumber(account)
+                .fromAccountNumber(fromAccountNumber)
                 .toAccountNumber(toAccountNumber)
                 .amount(amount)
                 .title(title)
@@ -92,7 +91,7 @@ public class TransferServiceTest {
         verify(transferRepository).save(transferCaptor.capture());
         Transfer transfer = transferCaptor.getValue();
 
-        verify(accountService, times(1)).findByAccountNumber(fromAccountNumber);
+        verify(accountService, times(2)).findByAccountNumber(fromAccountNumber);
 
         assertThat(transfer.getFromAccountNumber()).isEqualTo(returned.getFromAccountNumber());
         assertThat(transfer.getToAccountNumber()).isEqualTo(returned.getToAccountNumber());
