@@ -1,4 +1,4 @@
-package org.example.bankproject.exceptions;
+package org.example.bankproject.exceptions.handling;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

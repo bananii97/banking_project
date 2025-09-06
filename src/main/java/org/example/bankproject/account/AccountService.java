@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.bankproject.account.api.AccountDto;
 import org.example.bankproject.account.jpa.Account;
 import org.example.bankproject.account.jpa.AccountRepository;
+import org.example.bankproject.exceptions.AccountInActiveException;
 import org.example.bankproject.iban.IbanGenerator;
 import org.example.bankproject.user.PersonService;
 import org.example.bankproject.user.jpa.Person;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class AccountService {
 
@@ -16,7 +19,7 @@ public class AccountService {
     private final IbanGenerator ibanGenerator;
     private final PersonService personService;
 
-    public AccountDto createAccount(Long personId,String bankBranchCode) {
+    public AccountDto createAccount(Long personId, String bankBranchCode) {
 
         Person person = personService.findByPersonId(personId);
 
@@ -45,5 +48,21 @@ public class AccountService {
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Account with id " + accountId + " not found"));
+    }
+
+    public Account findByAccountNumber(String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Account with account number " + accountNumber + " not found"));
+    }
+
+    public void throwIfAccountInactive(String accountNumber) {
+        Account account = findByAccountNumber(accountNumber);
+        if (!account.isActive()) {
+            throw new AccountInActiveException("Account with id " + account.getId() + " is not active");
+        }
+    }
+
+    public Account saveAccount(Account account) {
+        return accountRepository.save(account);
     }
 }

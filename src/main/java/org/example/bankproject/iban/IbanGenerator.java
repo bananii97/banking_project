@@ -15,7 +15,7 @@ public class IbanGenerator {
 
     private static final String bankCode = "1140";
     private static final String plCountryCodeNumeric = "002521";
-    private static final int accountNumberRandomPartLength = 12;
+    private static final int accountNumberRandomPartLength = 16;
 
     public String createAccountNumber(String branchCode) {
         String accountNumber = "";
@@ -31,13 +31,12 @@ public class IbanGenerator {
     private String checkControlSum(String branchCode, String randomDigits) {
         BigInteger sum = new BigInteger(bankCode + branchCode + randomDigits + plCountryCodeNumeric);
         BigInteger checkNumber = new BigInteger("98").subtract(sum.mod(new BigInteger("97")));
-
         return checkNumber.toString();
     }
 
     private static String generateRandomDigits() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(12);
+        StringBuilder sb = new StringBuilder(16);
         for (int i = 0; i < accountNumberRandomPartLength; i++) {
             sb.append(random.nextInt(10));
         }

@@ -1,5 +1,6 @@
 package org.example.bankproject.user.jpa;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.bankproject.account.jpa.Account;
